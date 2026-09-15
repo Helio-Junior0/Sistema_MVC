@@ -80,12 +80,30 @@ class AuthController
         }
 
         $db = \App\Core\Database::getInstance();
-        $stmt = $db->prepare("SELECT uuid, nome, senha_hash FROM usuarios WHERE cpf_cnpj = :cpf AND ativo = 1");
+        $stmt = $db->prepare("SELECT uuid, nome, senha_hash, perfil_id FROM usuarios WHERE cpf_cnpj = :cpf AND ativo = 1");
         $stmt->execute([':cpf' => $cpf]);
         $user = $stmt->fetch();
 
-        if ($user && password_verify($senha, $user['senha_hash'])) {
-            echo "Login OK! Bem-vindo, " . $user['nome'];
+                if ($user && password_verify($senha, $user['senha_hash'])) {
+            // Guarda os dados do usuario na sessao
+            $_SESSION['user_id'] = $user['uuid'];
+            $_SESSION['user_nome'] = $user['nome'];
+            $_SESSION['user_perfil'] = $user['perfil_id'];
+
+            // Carrega as permissoes do perfil e guarda na sessao
+            $sqlPerms = "SELECT p.chave
+                         FROM permissoes p
+                         JOIN perfil_permissoes pp ON p.id = pp.permissao_id
+                         WHERE pp.perfil_id = :pid";
+            $stmtPerms = $db->prepare($sqlPerms);
+            $stmtPerms->execute([':pid' => $user['perfil_id']]);
+            $_SESSION['user_permissions'] = $stmtPerms->fetchAll(\PDO::FETCH_COLUMN);
+
+            // Seguranca: regenera o ID da sessao
+            session_regenerate_id(true);
+
+            // Redireciona pro dashboard
+            header('Location: /dashboard');
             exit;
         } else {
             echo "CPF ou senha invalidos.";
