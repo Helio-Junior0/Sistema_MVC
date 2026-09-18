@@ -15,5 +15,11 @@ $router->get('/cadastro', 'AuthController@cadastroForm');
 $router->post('/cadastro', 'AuthController@cadastroSubmit');
 
 $router->get('/dashboard', 'DashboardController@index');
+$router->get('/logout', 'AuthController@logout');
+
+$router->get('/perfis', 'PerfilController@listar');
+
+$router->get('/perfis/criarperfil', 'PerfilController@criarperfilForm');
+$router->post('/perfis/criarperfil', 'PerfilController@criarperfilSubmit');
 
 $router->dispatch();
