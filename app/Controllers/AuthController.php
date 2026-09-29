@@ -37,7 +37,7 @@ class AuthController
             exit;
         }
 
-        $uuid = $this->gerarUuid();
+        $uuid = gerar_uuid();
         $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
 
         $sql = "INSERT INTO usuarios (uuid, nome, email, cpf_cnpj, senha_hash, perfil_id, ativo, tipo_usuario)
@@ -53,14 +53,6 @@ class AuthController
 
         echo "Usuario cadastrado com sucesso! CPF: " . $cpf;
         exit;
-    }
-
-    private function gerarUuid()
-    {
-        $data = random_bytes(16);
-        $data[6] = chr(ord($data[6]) & 0x0f | 0x40);
-        $data[8] = chr(ord($data[8]) & 0x3f | 0x80);
-        return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
     }
 
     public function loginForm()
@@ -85,12 +77,11 @@ class AuthController
         $user = $stmt->fetch();
 
                 if ($user && password_verify($senha, $user['senha_hash'])) {
-            // Guarda os dados do usuario na sessao
+
             $_SESSION['user_id'] = $user['uuid'];
             $_SESSION['user_nome'] = $user['nome'];
             $_SESSION['user_perfil'] = $user['perfil_id'];
 
-            // Carrega as permissoes do perfil e guarda na sessao
             $sqlPerms = "SELECT p.chave
                          FROM permissoes p
                          JOIN perfil_permissoes pp ON p.id = pp.permissao_id
@@ -99,10 +90,8 @@ class AuthController
             $stmtPerms->execute([':pid' => $user['perfil_id']]);
             $_SESSION['user_permissions'] = $stmtPerms->fetchAll(\PDO::FETCH_COLUMN);
 
-            // Seguranca: regenera o ID da sessao
             session_regenerate_id(true);
 
-            // Redireciona pro dashboard
             header('Location: /dashboard');
             exit;
         } else {

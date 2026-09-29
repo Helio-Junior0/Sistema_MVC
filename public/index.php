@@ -22,4 +22,7 @@ $router->get('/perfis', 'PerfilController@listar');
 $router->get('/perfis/criarperfil', 'PerfilController@criarperfilForm');
 $router->post('/perfis/criarperfil', 'PerfilController@criarperfilSubmit');
 
+$router->get('/perfis/editar/{uuid}', 'PerfilController@editarForm');
+$router->post('/perfis/editar/{uuid}', 'PerfilController@editarSubmit');
+
 $router->dispatch();
