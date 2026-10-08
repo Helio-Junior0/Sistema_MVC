@@ -9,8 +9,9 @@ class AuthController
         view('cadastro');
     }
 
-        public function cadastroSubmit()
+            public function cadastroSubmit()
     {
+        header('Content-Type: application/json');
 
         $nome = trim($_POST['nome'] ?? '');
         $cpf = preg_replace('/[^0-9]/', '', $_POST['cpf'] ?? '');
@@ -19,12 +20,12 @@ class AuthController
         $confirmarSenha = $_POST['confirmar_senha'] ?? '';
 
         if (empty($nome) || empty($cpf) || empty($senha)) {
-            echo "Preencha nome, CPF e senha.";
+            echo json_encode(['sucesso' => false, 'mensagem' => 'Preencha nome, CPF e senha.']);
             exit;
         }
 
         if ($senha !== $confirmarSenha) {
-            echo "As senhas nao conferem.";
+            echo json_encode(['sucesso' => false, 'mensagem' => 'As senhas nao conferem.']);
             exit;
         }
 
@@ -33,7 +34,7 @@ class AuthController
         $stmt = $db->prepare("SELECT uuid FROM usuarios WHERE cpf_cnpj = :cpf");
         $stmt->execute([':cpf' => $cpf]);
         if ($stmt->fetch()) {
-            echo "Ja existe um usuario com esse CPF.";
+            echo json_encode(['sucesso' => false, 'mensagem' => 'Ja existe um usuario com esse CPF.']);
             exit;
         }
 
@@ -51,7 +52,7 @@ class AuthController
             ':senha_hash' => $senhaHash
         ]);
 
-        echo "Usuario cadastrado com sucesso! CPF: " . $cpf;
+        echo json_encode(['sucesso' => true, 'mensagem' => 'Cadastro realizado com sucesso!']);
         exit;
     }
 
