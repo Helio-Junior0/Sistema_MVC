@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Usuario - Sistema</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+    <div class="max-w-2xl mx-auto p-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Editar Usuário</h1>
+
+        <div class="bg-white rounded-xl shadow p-6">
+            <form action="/usuarios/editar/<?php echo $usuario['uuid']; ?>" method="POST" class="space-y-4">
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-1">Nome</label>
+                    <input type="text" name="nome" required
+                           value="<?php echo htmlspecialchars($usuario['nome']); ?>"
+                           class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-1">E-mail</label>
+                    <input type="email" name="email"
+                           value="<?php echo htmlspecialchars($usuario['email'] ?? ''); ?>"
+                           class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-1">CPF/CNPJ</label>
+                    <input type="text" name="cpf_cnpj" required
+                           value="<?php echo htmlspecialchars($usuario['cpf_cnpj']); ?>"
+                           class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-1">Perfil</label>
+                    <select name="perfil_id" required
+                            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
+                        <?php foreach ($perfis as $perfil): ?>
+                            <option value="<?php echo $perfil['id']; ?>"
+                                <?php echo $perfil['id'] == $usuario['perfil_id'] ? 'selected' : ''; ?>>
+                                <?php echo htmlspecialchars($perfil['nome']); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-1">Nova senha</label>
+                    <input type="password" name="senha"
+                           placeholder="Deixe em branco para manter a senha atual"
+                           class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <input type="checkbox" name="ativo" id="ativo"
+                           <?php echo $usuario['ativo'] ? 'checked' : ''; ?> class="w-4 h-4">
+                    <label for="ativo" class="text-sm text-gray-700">Ativo</label>
+                </div>
+
+                <div class="flex gap-3 pt-2">
+                    <button type="submit" class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700">
+                        Salvar
+                    </button>
+                    <a href="/usuarios" class="px-5 py-2 rounded-lg text-gray-600 hover:bg-gray-100">
+                        Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
