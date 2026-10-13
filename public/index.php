@@ -36,4 +36,16 @@ $router->post('/perfis/editar/{uuid}', 'PerfilController@editarSubmit');
 
 $router->get('/perfis/excluir/{uuid}', 'PerfilController@excluir');
 
+$router->get('/permissoes', 'PermissaoController@listar');
+
+$router->get('/permissoes/criarpermissao', 'PermissaoController@criarpermissaoForm');
+$router->post('/permissoes/criarpermissao', 'PermissaoController@criarpermissaoSubmit');
+
+$router->get('/permissoes/editar/{uuid}', 'PermissaoController@editarForm');
+$router->post('/permissoes/editar/{uuid}', 'PermissaoController@editarSubmit');
+
+$router->get('/permissoes/listar', 'PermissaoController@listar');
+
+$router->get('/permissoes/excluir/{uuid}', 'PermissaoController@excluir');
+
 $router->dispatch();
