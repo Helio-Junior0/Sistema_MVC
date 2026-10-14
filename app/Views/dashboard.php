@@ -24,9 +24,17 @@
             </a>
         </div>
         <div class="flex gap-4 mt-6">
-            <a href="/usuarios" class="text-blue-600 hover:underline">Usuários</a>
-            <a href="/perfis" class="text-blue-600 hover:underline">Perfis</a>
-            <a href="/permissoes" class="text-blue-600 hover:underline">Permissões</a>
+            <?php if (tem_permissao('usuarios.gerenciar')): ?>
+                <a href="/usuarios" class="text-blue-600 hover:underline">Usuários</a>
+            <?php endif; ?>
+
+            <?php if (tem_permissao('perfis.gerenciar')): ?>
+                <a href="/perfis" class="text-blue-600 hover:underline">Perfis</a>
+            <?php endif; ?>
+
+            <?php if (tem_permissao('permissoes.gerenciar')): ?>
+                <a href="/permissoes" class="text-blue-600 hover:underline">Permissões</a>
+            <?php endif; ?>
         </div>
     </div>
 </body>
