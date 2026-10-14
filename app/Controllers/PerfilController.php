@@ -6,10 +6,7 @@ class PerfilController
 {
     public function listar()
     {
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: /login');
-            exit;
-        }
+        exigir_permissao('perfis.gerenciar');
 
         $db = \App\Core\Database::getInstance();
         $perfis = $db->query("SELECT id, uuid, nome, descricao, ativo FROM perfis ORDER BY id")->fetchAll();
@@ -19,20 +16,14 @@ class PerfilController
 
     public function criarperfilForm()
     {
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: /login');
-            exit;
-        }
+        exigir_permissao('perfis.gerenciar');
 
         view('perfis/criarperfil');
     }
 
     public function criarperfilSubmit()
     {
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: /login');
-            exit;
-        }
+        exigir_permissao('perfis.gerenciar');
 
         $nome = trim($_POST['nome'] ?? '');
         $descricao = trim($_POST['descricao'] ?? '');
@@ -61,10 +52,7 @@ class PerfilController
 
     public function editarForm($uuid)
     {
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: /login');
-            exit;
-        }
+        exigir_permissao('perfis.gerenciar');
 
         $db = \App\Core\Database::getInstance();
         $stmt = $db->prepare("SELECT id, uuid, nome, descricao, ativo FROM perfis WHERE uuid = :uuid");
@@ -93,10 +81,7 @@ class PerfilController
 
     public function editarSubmit($uuid)
     {
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: /login');
-            exit;
-        }
+        exigir_permissao('perfis.gerenciar');
 
         $nome = trim($_POST['nome'] ?? '');
         $descricao = trim($_POST['descricao'] ?? '');
@@ -157,10 +142,7 @@ class PerfilController
 
     public function excluir($uuid)
     {
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: /login');
-            exit;
-        }
+        exigir_permissao('perfis.gerenciar');
 
         $db = \App\Core\Database::getInstance();
 

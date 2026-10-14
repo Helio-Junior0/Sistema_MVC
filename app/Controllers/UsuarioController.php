@@ -6,10 +6,7 @@ class UsuarioController
 {
     public function listar()
     {
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: /login');
-            exit;
-        }
+        exigir_permissao('usuarios.gerenciar');
 
         $db = \App\Core\Database::getInstance();
         $usuarios = $db->query("SELECT u.uuid, u.nome, u.email, u.cpf_cnpj, u.ativo, p.nome AS perfil
@@ -22,10 +19,7 @@ class UsuarioController
 
     public function criarusuarioForm()
     {
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: /login');
-            exit;
-        }
+        exigir_permissao('usuarios.gerenciar');
 
         $db = \App\Core\Database::getInstance();
         $perfis = $db->query("SELECT id, nome FROM perfis WHERE ativo = 1 ORDER BY nome")->fetchAll();
@@ -35,10 +29,7 @@ class UsuarioController
 
     public function criarusuarioSubmit()
     {
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: /login');
-            exit;
-        }
+        exigir_permissao('usuarios.gerenciar');
 
         $nome = trim($_POST['nome'] ?? '');
         $email = trim($_POST['email'] ?? '');
@@ -92,10 +83,7 @@ class UsuarioController
 
     public function editarForm($uuid)
     {
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: /login');
-            exit;
-        }
+        exigir_permissao('usuarios.gerenciar');
 
         $db = \App\Core\Database::getInstance();
         $stmt = $db->prepare("SELECT u.uuid, u.nome, u.email, u.cpf_cnpj, u.perfil_id, u.ativo, p.nome AS perfil_nome
@@ -117,10 +105,7 @@ class UsuarioController
 
     public function editarSubmit($uuid)
     {
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: /login');
-            exit;
-        }
+        exigir_permissao('usuarios.gerenciar');
 
         $nome = trim($_POST['nome'] ?? '');
         $email = trim($_POST['email'] ?? '');
@@ -173,10 +158,7 @@ class UsuarioController
 
     public function excluir($uuid)
     {
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: /login');
-            exit;
-        }
+        exigir_permissao('usuarios.gerenciar');
 
         // Impede o usuario logado de excluir a si mesmo
         if ($uuid === $_SESSION['user_id']) {

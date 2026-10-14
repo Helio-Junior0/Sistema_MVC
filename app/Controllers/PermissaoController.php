@@ -6,10 +6,7 @@ class PermissaoController
 {
     public function listar()
     {
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: /login');
-            exit;
-        }
+        exigir_permissao('permissoes.gerenciar');
 
         $db = \App\Core\Database::getInstance();
         $permissoes = $db->query("SELECT id, uuid, chave, nome_exibicao, grupo FROM permissoes ORDER BY grupo, chave")->fetchAll();
@@ -19,20 +16,14 @@ class PermissaoController
 
     public function criarpermissaoForm()
     {
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: /login');
-            exit;
-        }
+        exigir_permissao('permissoes.gerenciar');
 
         view('permissoes/criarpermissao');
     }
 
     public function criarpermissaoSubmit()
     {
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: /login');
-            exit;
-        }
+        exigir_permissao('permissoes.gerenciar');
 
         $chave = trim($_POST['chave'] ?? '');
         $nome_exibicao = trim($_POST['nome_exibicao'] ?? '');
@@ -71,10 +62,7 @@ class PermissaoController
 
     public function editarForm($uuid)
     {
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: /login');
-            exit;
-        }
+        exigir_permissao('permissoes.gerenciar');
 
         $db = \App\Core\Database::getInstance();
         $stmt = $db->prepare("SELECT id, uuid, chave, nome_exibicao, grupo FROM permissoes WHERE uuid = :uuid");
@@ -91,10 +79,7 @@ class PermissaoController
 
     public function editarSubmit($uuid)
     {
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: /login');
-            exit;
-        }
+        exigir_permissao('permissoes.gerenciar');
 
         $chave = trim($_POST['chave'] ?? '');
         $nome_exibicao = trim($_POST['nome_exibicao'] ?? '');
@@ -131,10 +116,7 @@ class PermissaoController
 
     public function excluir($uuid)
     {
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: /login');
-            exit;
-        }
+        exigir_permissao('permissoes.gerenciar');
 
         $db = \App\Core\Database::getInstance();
 
