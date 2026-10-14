@@ -15,19 +15,35 @@
                 <div>
                     <label class="block text-sm font-semibold text-gray-600 mb-1">Nome</label>
                     <input type="text" name="nome" required
-                           value="<?php echo $perfil['nome']; ?>"
+                           value="<?php echo htmlspecialchars($perfil['nome']); ?>"
                            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
                 </div>
 
                 <div>
                     <label class="block text-sm font-semibold text-gray-600 mb-1">Descricao</label>
                     <textarea name="descricao" rows="3"
-                              class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"><?php echo $perfil['descricao']; ?></textarea>
+                              class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"><?php echo htmlspecialchars($perfil['descricao'] ?? ''); ?></textarea>
                 </div>
 
                 <div class="flex items-center gap-2">
                     <input type="checkbox" name="ativo" id="ativo" <?php echo $perfil['ativo'] ? 'checked' : ''; ?> class="w-4 h-4">
                     <label for="ativo" class="text-sm text-gray-700">Ativo</label>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-2">Permissões</label>
+                    <div class="border border-gray-200 rounded-lg p-4 space-y-2">
+                        <?php foreach ($permissoes as $permissao): ?>
+                            <label class="flex items-center gap-2 text-sm text-gray-700">
+                                <input type="checkbox" name="permissoes[]"
+                                       value="<?php echo $permissao['id']; ?>"
+                                       <?php echo in_array($permissao['id'], $permissoesDoPerfil) ? 'checked' : ''; ?>
+                                       class="w-4 h-4">
+                                <span class="text-gray-400 w-28"><?php echo htmlspecialchars($permissao['grupo'] ?? ''); ?></span>
+                                <?php echo htmlspecialchars($permissao['nome_exibicao']); ?>
+                            </label>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
 
                 <div class="flex gap-3 pt-2">

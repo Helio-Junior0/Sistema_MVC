@@ -40,6 +40,7 @@ class PerfilController
 
         if (empty($nome)) {
             echo "O nome do perfil e obrigatorio.";
+            echo "<br><a href='/perfis/criarperfil'>Voltar</a>";
             exit;
         }
 
@@ -75,7 +76,19 @@ class PerfilController
             exit;
         }
 
-        view('perfis/editar', ['perfil' => $perfil]);
+        // Todas as permissoes, para montar os checkboxes
+        $permissoes = $db->query("SELECT id, chave, nome_exibicao, grupo FROM permissoes ORDER BY grupo, chave")->fetchAll();
+
+        // IDs das permissoes que este perfil ja tem
+        $stmt = $db->prepare("SELECT permissao_id FROM perfil_permissoes WHERE perfil_id = :pid");
+        $stmt->execute([':pid' => $perfil['id']]);
+        $permissoesDoPerfil = $stmt->fetchAll(\PDO::FETCH_COLUMN);
+
+        view('perfis/editar', [
+            'perfil' => $perfil,
+            'permissoes' => $permissoes,
+            'permissoesDoPerfil' => $permissoesDoPerfil
+        ]);
     }
 
     public function editarSubmit($uuid)
@@ -91,17 +104,52 @@ class PerfilController
 
         if (empty($nome)) {
             echo "O nome do perfil e obrigatorio.";
+            echo "<br><a href='/perfis/editar/$uuid'>Voltar</a>";
             exit;
         }
 
         $db = \App\Core\Database::getInstance();
-        $stmt = $db->prepare("UPDATE perfis SET nome = :nome, descricao = :descricao, ativo = :ativo WHERE uuid = :uuid");
-        $stmt->execute([
-            ':nome' => $nome,
-            ':descricao' => $descricao,
-            ':ativo' => $ativo,
-            ':uuid' => $uuid
-        ]);
+
+        // Busca o id interno do perfil pelo uuid
+        $stmt = $db->prepare("SELECT id FROM perfis WHERE uuid = :uuid");
+        $stmt->execute([':uuid' => $uuid]);
+        $perfilId = $stmt->fetchColumn();
+
+        if (!$perfilId) {
+            header('Location: /perfis');
+            exit;
+        }
+
+        // Permissoes marcadas no formulario (vem como array)
+        $permissoesMarcadas = $_POST['permissoes'] ?? [];
+
+        try {
+            $db->beginTransaction();
+
+            $stmt = $db->prepare("UPDATE perfis SET nome = :nome, descricao = :descricao, ativo = :ativo WHERE id = :id");
+            $stmt->execute([
+                ':nome' => $nome,
+                ':descricao' => $descricao,
+                ':ativo' => $ativo,
+                ':id' => $perfilId
+            ]);
+
+            // Apaga os vinculos antigos e grava os novos
+            $stmt = $db->prepare("DELETE FROM perfil_permissoes WHERE perfil_id = :pid");
+            $stmt->execute([':pid' => $perfilId]);
+
+            $stmt = $db->prepare("INSERT INTO perfil_permissoes (perfil_id, permissao_id) VALUES (:pid, :permid)");
+            foreach ($permissoesMarcadas as $permissaoId) {
+                $stmt->execute([':pid' => $perfilId, ':permid' => (int) $permissaoId]);
+            }
+
+            $db->commit();
+        } catch (\PDOException $e) {
+            $db->rollBack();
+            echo "Erro ao salvar o perfil.";
+            echo "<br><a href='/perfis'>Voltar</a>";
+            exit;
+        }
 
         header('Location: /perfis');
         exit;
