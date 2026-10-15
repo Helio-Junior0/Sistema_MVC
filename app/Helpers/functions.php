@@ -50,3 +50,28 @@ function exigir_permissao($chave)
         exit;
     }
 }
+
+function notificacoes_nao_lidas($limite = 5)
+{
+    if (!isset($_SESSION['user_id'])) {
+        return ['total' => 0, 'itens' => []];
+    }
+
+    $db = \App\Core\Database::getInstance();
+
+    // Quantas nao lidas o usuario tem (para o numerozinho do sino)
+    $stmt = $db->prepare("SELECT COUNT(*) FROM notificacoes WHERE usuario_uuid = :u AND lida = 0");
+    $stmt->execute([':u' => $_SESSION['user_id']]);
+    $total = (int) $stmt->fetchColumn();
+
+    // As mais recentes, para a lista
+    $stmt = $db->prepare("SELECT uuid, titulo, mensagem, criado_em
+                          FROM notificacoes
+                          WHERE usuario_uuid = :u AND lida = 0
+                          ORDER BY criado_em DESC
+                          LIMIT " . (int) $limite);
+    $stmt->execute([':u' => $_SESSION['user_id']]);
+
+    return ['total' => $total, 'itens' => $stmt->fetchAll()];
+}
+

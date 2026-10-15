@@ -51,4 +51,6 @@ $router->get('/permissoes/listar', 'PermissaoController@listar');
 
 $router->get('/permissoes/excluir/{uuid}', 'PermissaoController@excluir');
 
+$router->get('/notificacoes/abrir/{uuid}', 'NotificacaoController@abrir');
+
 $router->dispatch();
