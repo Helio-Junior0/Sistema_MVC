@@ -11,14 +11,14 @@ class PerfilController
         $db = \App\Core\Database::getInstance();
         $perfis = $db->query("SELECT id, uuid, nome, descricao, ativo FROM perfis ORDER BY id")->fetchAll();
 
-        view('perfis/listar', ['perfis' => $perfis]);
+        view('perfis/listar', ['perfis' => $perfis, 'titulo' => 'Perfis'], 'layouts/master');
     }
 
     public function criarperfilForm()
     {
         exigir_permissao('perfis.gerenciar');
 
-        view('perfis/criarperfil');
+        view('perfis/criarperfil', ['titulo' => 'Novo Perfil'], 'layouts/master');
     }
 
     public function criarperfilSubmit()
@@ -64,10 +64,8 @@ class PerfilController
             exit;
         }
 
-        // Todas as permissoes, para montar os checkboxes
         $permissoes = $db->query("SELECT id, chave, nome_exibicao, grupo FROM permissoes ORDER BY grupo, chave")->fetchAll();
 
-        // IDs das permissoes que este perfil ja tem
         $stmt = $db->prepare("SELECT permissao_id FROM perfil_permissoes WHERE perfil_id = :pid");
         $stmt->execute([':pid' => $perfil['id']]);
         $permissoesDoPerfil = $stmt->fetchAll(\PDO::FETCH_COLUMN);
@@ -75,8 +73,9 @@ class PerfilController
         view('perfis/editar', [
             'perfil' => $perfil,
             'permissoes' => $permissoes,
-            'permissoesDoPerfil' => $permissoesDoPerfil
-        ]);
+            'permissoesDoPerfil' => $permissoesDoPerfil,
+            'titulo' => 'Editar Perfil'
+        ], 'layouts/master');
     }
 
     public function editarSubmit($uuid)
@@ -152,7 +151,6 @@ class PerfilController
 
             header('Location: /perfis');
             exit;
-
         } catch (\PDOException $e) {
             echo "Nao e possivel excluir este perfil porque existem usuarios vinculados a ele.";
             echo "<br><a href='/perfis'>Voltar</a>";

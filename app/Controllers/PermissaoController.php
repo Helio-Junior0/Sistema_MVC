@@ -11,14 +11,14 @@ class PermissaoController
         $db = \App\Core\Database::getInstance();
         $permissoes = $db->query("SELECT id, uuid, chave, nome_exibicao, grupo FROM permissoes ORDER BY grupo, chave")->fetchAll();
 
-        view('permissoes/listar', ['permissoes' => $permissoes]);
+        view('permissoes/listar', ['permissoes' => $permissoes, 'titulo' => 'Permissões'], 'layouts/master');
     }
 
     public function criarpermissaoForm()
     {
         exigir_permissao('permissoes.gerenciar');
 
-        view('permissoes/criarpermissao');
+        view('permissoes/criarpermissao', ['titulo' => 'Nova Permissão'], 'layouts/master');
     }
 
     public function criarpermissaoSubmit()
@@ -74,7 +74,7 @@ class PermissaoController
             exit;
         }
 
-        view('permissoes/editar', ['permissao' => $permissao]);
+        view('permissoes/editar', ['permissao' => $permissao, 'titulo' => 'Editar Permissão'], 'layouts/master');
     }
 
     public function editarSubmit($uuid)

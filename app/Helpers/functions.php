@@ -1,15 +1,26 @@
 <?php
 
-function view($nome, $dados = [])
+function view($nome, $dados = [], $layout = null)
 {
     $caminho = __DIR__ . '/../Views/' . $nome . '.php';
 
-    if (file_exists($caminho)) {
-        extract($dados);
-        require $caminho;
-    } else {
+    if (!file_exists($caminho)) {
         echo "View nao encontrada: " . $nome;
+        return;
     }
+
+    extract($dados);
+
+    if ($layout === null) {
+        require $caminho;
+        return;
+    }
+
+    ob_start();
+    require $caminho;
+    $conteudo = ob_get_clean();
+
+    require __DIR__ . '/../Views/' . $layout . '.php';
 }
 
 function gerar_uuid()

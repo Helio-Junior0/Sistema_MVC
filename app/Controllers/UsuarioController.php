@@ -14,7 +14,7 @@ class UsuarioController
                                 JOIN perfis p ON p.id = u.perfil_id
                                 ORDER BY u.nome")->fetchAll();
 
-        view('usuarios/listar', ['usuarios' => $usuarios]);
+        view('usuarios/listar', ['usuarios' => $usuarios, 'titulo' => 'Usuários'], 'layouts/master');
     }
 
     public function criarusuarioForm()
@@ -24,7 +24,7 @@ class UsuarioController
         $db = \App\Core\Database::getInstance();
         $perfis = $db->query("SELECT id, nome FROM perfis WHERE ativo = 1 ORDER BY nome")->fetchAll();
 
-        view('usuarios/criarusuario', ['perfis' => $perfis]);
+        view('usuarios/criarusuario', ['perfis' => $perfis, 'titulo' => 'Novo Usuário'], 'layouts/master');
     }
 
     public function criarusuarioSubmit()
@@ -100,7 +100,7 @@ class UsuarioController
 
         $perfis = $db->query("SELECT id, nome FROM perfis WHERE ativo = 1 ORDER BY nome")->fetchAll();
 
-        view('usuarios/editar', ['usuario' => $usuario, 'perfis' => $perfis]);
+        view('usuarios/editar', ['usuario' => $usuario, 'perfis' => $perfis, 'titulo' => 'Editar Usuário'], 'layouts/master');
     }
 
     public function editarSubmit($uuid)

@@ -12,6 +12,6 @@ class DashboardController
             exit;
         }
 
-        view('dashboard');
+        view('dashboard', ['titulo' => 'Dashboard'], 'layouts/master');
     }
 }
