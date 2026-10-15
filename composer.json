@@ -6,7 +6,9 @@
             "name": "Helio Jr"
         }
     ],
-    "require": {},
+    "require": {
+        "vlucas/phpdotenv": "*"
+    },
     "autoload":{
         "psr-4":{
             "App\\": "app/"

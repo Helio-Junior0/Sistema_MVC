@@ -13,10 +13,10 @@ class Database
     public static function getInstance()
     {
         if (self::$instancia === null) {
-            $host = 'localhost';
-            $banco = 'pgemt';
-            $usuario = 'root';
-            $senha = '';
+            $host = $_ENV['DB_HOST'];
+            $banco = $_ENV['DB_NAME'];
+            $usuario = $_ENV['DB_USER'];
+            $senha = $_ENV['DB_PASS'];
 
             $dsn = "mysql:host=$host;dbname=$banco;charset=utf8mb4";
 
