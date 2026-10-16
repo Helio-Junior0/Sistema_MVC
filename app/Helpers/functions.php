@@ -75,3 +75,26 @@ function notificacoes_nao_lidas($limite = 5)
     return ['total' => $total, 'itens' => $stmt->fetchAll()];
 }
 
+function notificar($usuarioUuid, $titulo, $mensagem, $link = null, $enviarEmail = true)
+{
+    $db = \App\Core\Database::getInstance();
+
+    $stmt = $db->prepare("INSERT INTO notificacoes (uuid, usuario_uuid, titulo, mensagem, link, enviar_email)
+                          VALUES (:uuid, :usuario, :titulo, :mensagem, :link, :enviar_email)");
+    $stmt->execute([
+        ':uuid' => gerar_uuid(),
+        ':usuario' => $usuarioUuid,
+        ':titulo' => $titulo,
+        ':mensagem' => $mensagem,
+        ':link' => $link,
+        ':enviar_email' => $enviarEmail ? 1 : 0
+    ]);
+}
+
+function render($nome, $dados = [])
+{
+    extract($dados);
+    ob_start();
+    require __DIR__ . '/../Views/' . $nome . '.php';
+    return ob_get_clean();
+}

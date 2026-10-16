@@ -53,4 +53,6 @@ $router->get('/permissoes/excluir/{uuid}', 'PermissaoController@excluir');
 
 $router->get('/notificacoes/abrir/{uuid}', 'NotificacaoController@abrir');
 
+$router->get('/usuarios/pdf', 'UsuarioController@pdf');
+
 $router->dispatch();

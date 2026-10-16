@@ -77,6 +77,13 @@ class UsuarioController
             ':ativo' => $ativo
         ]);
 
+        notificar(
+            $uuid,
+            'Sua conta foi criada',
+            'Olá, ' . $nome . '! Sua conta no sistema foi criada. Você já pode acessar com seu CPF e a senha definida.',
+            '/dashboard'
+        );
+
         header('Location: /usuarios');
         exit;
     }
@@ -180,5 +187,26 @@ class UsuarioController
             echo "<br><a href='/usuarios'>Voltar</a>";
             exit;
         }
+    }
+        public function pdf()
+    {
+        exigir_permissao('usuarios.gerenciar');
+
+        $db = \App\Core\Database::getInstance();
+        $usuarios = $db->query("SELECT u.nome, u.email, u.cpf_cnpj, u.ativo, p.nome AS perfil
+                                FROM usuarios u
+                                JOIN perfis p ON p.id = u.perfil_id
+                                ORDER BY u.nome")->fetchAll();
+
+        $html = render('pdf/usuarios', ['usuarios' => $usuarios]);
+
+        $mpdf = new \Mpdf\Mpdf([
+            'tempDir' => __DIR__ . '/../../storage/tmp',
+            'format' => 'A4'
+        ]);
+        $mpdf->SetTitle('Relatório de Usuários');
+        $mpdf->WriteHTML($html);
+        $mpdf->Output('relatorio-usuarios.pdf', 'I');
+        exit;
     }
 }

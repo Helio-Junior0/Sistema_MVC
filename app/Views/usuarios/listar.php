@@ -1,8 +1,13 @@
 <div class="flex justify-between items-center mb-6">
     <h1 class="text-3xl font-bold text-gray-800">Usuários</h1>
-    <a href="/usuarios/criarusuario" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-        Novo Usuário
-    </a>
+        <div class="flex gap-3">
+        <a href="/usuarios/pdf" target="_blank" class="bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-800">
+            Gerar PDF
+        </a>
+        <a href="/usuarios/criarusuario" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+            Novo Usuário
+        </a>
+    </div>
 </div>
 
 <div class="bg-white rounded-xl shadow overflow-hidden">
