@@ -68,9 +68,9 @@
                     </div>
                 </details>
 
-                <span class="text-sm text-gray-700">
+                <a href="/meu-perfil" class="text-sm text-gray-700 hover:text-blue-600">
                     <?php echo htmlspecialchars($_SESSION['user_nome'] ?? ''); ?>
-                </span>
+                </a>
 
                 <a href="/logout" class="text-sm text-red-600 hover:underline">Sair</a>
             </header>

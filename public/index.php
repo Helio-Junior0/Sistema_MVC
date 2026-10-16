@@ -55,4 +55,8 @@ $router->get('/notificacoes/abrir/{uuid}', 'NotificacaoController@abrir');
 
 $router->get('/usuarios/pdf', 'UsuarioController@pdf');
 
+$router->get('/meu-perfil', 'MeuPerfilController@index');
+$router->post('/meu-perfil/dados', 'MeuPerfilController@salvarDados');
+$router->post('/meu-perfil/senha', 'MeuPerfilController@alterarSenha');
+
 $router->dispatch();
