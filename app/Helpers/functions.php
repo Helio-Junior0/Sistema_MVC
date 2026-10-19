@@ -123,3 +123,76 @@ function verificar_csrf()
         exit;
     }
 }
+
+function validar_cpf($cpf)
+{
+    $cpf = preg_replace('/\D/', '', $cpf);
+
+    if (strlen($cpf) !== 11 || preg_match('/^(\d)\1{10}$/', $cpf)) {
+        return false;
+    }
+
+    // Calcula os dois digitos verificadores (posicoes 9 e 10)
+    for ($t = 9; $t < 11; $t++) {
+        $soma = 0;
+        for ($i = 0; $i < $t; $i++) {
+            $soma += $cpf[$i] * (($t + 1) - $i);
+        }
+        $digito = ((10 * $soma) % 11) % 10;
+
+        if ((int) $cpf[$t] !== $digito) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+function validar_cnpj($cnpj)
+{
+    $cnpj = preg_replace('/\D/', '', $cnpj);
+
+    if (strlen($cnpj) !== 14 || preg_match('/^(\d)\1{13}$/', $cnpj)) {
+        return false;
+    }
+
+    $pesos1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+    $pesos2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+
+    // Primeiro digito verificador
+    $soma = 0;
+    for ($i = 0; $i < 12; $i++) {
+        $soma += $cnpj[$i] * $pesos1[$i];
+    }
+    $resto = $soma % 11;
+    $digito1 = $resto < 2 ? 0 : 11 - $resto;
+
+    if ((int) $cnpj[12] !== $digito1) {
+        return false;
+    }
+
+    // Segundo digito verificador
+    $soma = 0;
+    for ($i = 0; $i < 13; $i++) {
+        $soma += $cnpj[$i] * $pesos2[$i];
+    }
+    $resto = $soma % 11;
+    $digito2 = $resto < 2 ? 0 : 11 - $resto;
+
+    return (int) $cnpj[13] === $digito2;
+}
+
+function validar_cpf_cnpj($documento)
+{
+    $documento = preg_replace('/\D/', '', $documento);
+
+    if (strlen($documento) === 11) {
+        return validar_cpf($documento);
+    }
+
+    if (strlen($documento) === 14) {
+        return validar_cnpj($documento);
+    }
+
+    return false;
+}

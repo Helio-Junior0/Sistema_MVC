@@ -39,9 +39,9 @@ class UsuarioController
         $confirmarSenha = $_POST['confirmar_senha'] ?? '';
         $ativo = isset($_POST['ativo']) ? 1 : 0;
 
-        if (empty($nome) || empty($cpf_cnpj) || empty($perfil_id) || empty($senha)) {
-            echo "Nome, CPF, perfil e senha sao obrigatorios.";
-            echo "<br><a href='/usuarios/criarusuario'>Voltar</a>";
+        if (!validar_cpf_cnpj($cpf_cnpj)) {
+            echo "CPF/CNPJ invalido.";
+            echo "<br><a href='/usuarios'>Voltar</a>";
             exit;
         }
 
@@ -121,9 +121,9 @@ class UsuarioController
         $senha = $_POST['senha'] ?? '';
         $ativo = isset($_POST['ativo']) ? 1 : 0;
 
-        if (empty($nome) || empty($cpf_cnpj) || empty($perfil_id)) {
-            echo "Nome, CPF e perfil sao obrigatorios.";
-            echo "<br><a href='/usuarios/editar/$uuid'>Voltar</a>";
+        if (!validar_cpf_cnpj($cpf_cnpj)) {
+            echo "CPF/CNPJ invalido.";
+            echo "<br><a href='/usuarios'>Voltar</a>";
             exit;
         }
 
@@ -188,7 +188,7 @@ class UsuarioController
             exit;
         }
     }
-        public function pdf()
+    public function pdf()
     {
         exigir_permissao('usuarios.gerenciar');
 

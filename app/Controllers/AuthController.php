@@ -9,7 +9,7 @@ class AuthController
         view('cadastro');
     }
 
-            public function cadastroSubmit()
+    public function cadastroSubmit()
     {
         header('Content-Type: application/json');
 
@@ -19,8 +19,8 @@ class AuthController
         $senha = $_POST['senha'] ?? '';
         $confirmarSenha = $_POST['confirmar_senha'] ?? '';
 
-        if (empty($nome) || empty($cpf) || empty($senha)) {
-            echo json_encode(['sucesso' => false, 'mensagem' => 'Preencha nome, CPF e senha.']);
+        if (!validar_cpf_cnpj($cpf)) {
+            echo json_encode(['sucesso' => false, 'mensagem' => 'CPF/CNPJ invalido.']);
             exit;
         }
 
@@ -63,7 +63,7 @@ class AuthController
 
     public function loginSubmit()
     {
-        
+
         $cpf = preg_replace('/[^0-9]/', '', $_POST['cpf'] ?? '');
         $senha = $_POST['senha'] ?? '';
 
@@ -77,7 +77,7 @@ class AuthController
         $stmt->execute([':cpf' => $cpf]);
         $user = $stmt->fetch();
 
-                if ($user && password_verify($senha, $user['senha_hash'])) {
+        if ($user && password_verify($senha, $user['senha_hash'])) {
 
             $_SESSION['user_id'] = $user['uuid'];
             $_SESSION['user_nome'] = $user['nome'];
