@@ -4,25 +4,26 @@
     <div class="bg-white rounded-xl shadow p-6">
         <form action="/permissoes/editar/<?php echo $permissao['uuid']; ?>" method="POST" class="space-y-4">
 
+            <?php echo csrf_field(); ?>
             <div>
                 <label class="block text-sm font-semibold text-gray-600 mb-1">Chave</label>
                 <input type="text" name="chave" required
-                       value="<?php echo htmlspecialchars($permissao['chave']); ?>"
-                       class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
+                    value="<?php echo htmlspecialchars($permissao['chave']); ?>"
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
             </div>
 
             <div>
                 <label class="block text-sm font-semibold text-gray-600 mb-1">Nome de exibição</label>
                 <input type="text" name="nome_exibicao" required
-                       value="<?php echo htmlspecialchars($permissao['nome_exibicao']); ?>"
-                       class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
+                    value="<?php echo htmlspecialchars($permissao['nome_exibicao']); ?>"
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
             </div>
 
             <div>
                 <label class="block text-sm font-semibold text-gray-600 mb-1">Grupo</label>
                 <input type="text" name="grupo"
-                       value="<?php echo htmlspecialchars($permissao['grupo'] ?? ''); ?>"
-                       class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
+                    value="<?php echo htmlspecialchars($permissao['grupo'] ?? ''); ?>"
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
             </div>
 
             <div class="flex gap-3 pt-2">

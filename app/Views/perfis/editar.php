@@ -4,17 +4,18 @@
     <div class="bg-white rounded-xl shadow p-6">
         <form action="/perfis/editar/<?php echo $perfil['uuid']; ?>" method="POST" class="space-y-4">
 
+            <?php echo csrf_field(); ?>
             <div>
                 <label class="block text-sm font-semibold text-gray-600 mb-1">Nome</label>
                 <input type="text" name="nome" required
-                       value="<?php echo htmlspecialchars($perfil['nome']); ?>"
-                       class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
+                    value="<?php echo htmlspecialchars($perfil['nome']); ?>"
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
             </div>
 
             <div>
                 <label class="block text-sm font-semibold text-gray-600 mb-1">Descrição</label>
                 <textarea name="descricao" rows="3"
-                          class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"><?php echo htmlspecialchars($perfil['descricao'] ?? ''); ?></textarea>
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"><?php echo htmlspecialchars($perfil['descricao'] ?? ''); ?></textarea>
             </div>
 
             <div class="flex items-center gap-2">
@@ -28,9 +29,9 @@
                     <?php foreach ($permissoes as $permissao): ?>
                         <label class="flex items-center gap-2 text-sm text-gray-700">
                             <input type="checkbox" name="permissoes[]"
-                                   value="<?php echo $permissao['id']; ?>"
-                                   <?php echo in_array($permissao['id'], $permissoesDoPerfil) ? 'checked' : ''; ?>
-                                   class="w-4 h-4">
+                                value="<?php echo $permissao['id']; ?>"
+                                <?php echo in_array($permissao['id'], $permissoesDoPerfil) ? 'checked' : ''; ?>
+                                class="w-4 h-4">
                             <span class="text-gray-400 w-28"><?php echo htmlspecialchars($permissao['grupo'] ?? ''); ?></span>
                             <?php echo htmlspecialchars($permissao['nome_exibicao']); ?>
                         </label>

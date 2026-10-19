@@ -4,31 +4,32 @@
     <div class="bg-white rounded-xl shadow p-6">
         <form action="/usuarios/editar/<?php echo $usuario['uuid']; ?>" method="POST" class="space-y-4">
 
+            <?php echo csrf_field(); ?>
             <div>
                 <label class="block text-sm font-semibold text-gray-600 mb-1">Nome</label>
                 <input type="text" name="nome" required
-                       value="<?php echo htmlspecialchars($usuario['nome']); ?>"
-                       class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
+                    value="<?php echo htmlspecialchars($usuario['nome']); ?>"
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
             </div>
 
             <div>
                 <label class="block text-sm font-semibold text-gray-600 mb-1">E-mail</label>
                 <input type="email" name="email"
-                       value="<?php echo htmlspecialchars($usuario['email'] ?? ''); ?>"
-                       class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
+                    value="<?php echo htmlspecialchars($usuario['email'] ?? ''); ?>"
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
             </div>
 
             <div>
                 <label class="block text-sm font-semibold text-gray-600 mb-1">CPF/CNPJ</label>
                 <input type="text" name="cpf_cnpj" required
-                       value="<?php echo htmlspecialchars($usuario['cpf_cnpj']); ?>"
-                       class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
+                    value="<?php echo htmlspecialchars($usuario['cpf_cnpj']); ?>"
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
             </div>
 
             <div>
                 <label class="block text-sm font-semibold text-gray-600 mb-1">Perfil</label>
                 <select name="perfil_id" required
-                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
                     <?php foreach ($perfis as $perfil): ?>
                         <option value="<?php echo $perfil['id']; ?>"
                             <?php echo $perfil['id'] == $usuario['perfil_id'] ? 'selected' : ''; ?>>
@@ -41,7 +42,7 @@
             <div>
                 <label class="block text-sm font-semibold text-gray-600 mb-1">Nova senha</label>
                 <input type="password" name="senha" placeholder="Deixe em branco para manter a senha atual"
-                       class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
             </div>
 
             <div class="flex items-center gap-2">

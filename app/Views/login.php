@@ -41,7 +41,7 @@
             <!-- TEMPORARIO: action vai virar base_url('/login') -->
             <form action="/login" method="POST" class="space-y-6">
 
-                <!-- TEMPORARIO: aqui vai entrar o csrf_field() -->
+                <?php echo csrf_field(); ?>
 
                 <div>
                     <input class="glass-input rounded-lg w-full py-3 px-4" 

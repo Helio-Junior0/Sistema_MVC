@@ -11,6 +11,10 @@ use App\Core\Router;
 
 $router = new Router();
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    verificar_csrf();
+}
+
 $router->get('/login', 'AuthController@loginForm');
 $router->post('/login', 'AuthController@loginSubmit');
 
@@ -29,7 +33,7 @@ $router->post('/usuarios/criarusuario', 'UsuarioController@criarusuarioSubmit');
 $router->get('/usuarios/editar/{uuid}', 'UsuarioController@editarForm');
 $router->post('/usuarios/editar/{uuid}', 'UsuarioController@editarSubmit');
 
-$router->get('/usuarios/excluir/{uuid}', 'UsuarioController@excluir');
+$router->post('/usuarios/excluir/{uuid}', 'UsuarioController@excluir');
 
 $router->get('/perfis/criarperfil', 'PerfilController@criarperfilForm');
 $router->post('/perfis/criarperfil', 'PerfilController@criarperfilSubmit');
@@ -37,7 +41,7 @@ $router->post('/perfis/criarperfil', 'PerfilController@criarperfilSubmit');
 $router->get('/perfis/editar/{uuid}', 'PerfilController@editarForm');
 $router->post('/perfis/editar/{uuid}', 'PerfilController@editarSubmit');
 
-$router->get('/perfis/excluir/{uuid}', 'PerfilController@excluir');
+$router->post('/perfis/excluir/{uuid}', 'PerfilController@excluir');
 
 $router->get('/permissoes', 'PermissaoController@listar');
 
@@ -48,8 +52,7 @@ $router->get('/permissoes/editar/{uuid}', 'PermissaoController@editarForm');
 $router->post('/permissoes/editar/{uuid}', 'PermissaoController@editarSubmit');
 
 $router->get('/permissoes/listar', 'PermissaoController@listar');
-
-$router->get('/permissoes/excluir/{uuid}', 'PermissaoController@excluir');
+$router->post('/permissoes/excluir/{uuid}', 'PermissaoController@excluir');
 
 $router->get('/notificacoes/abrir/{uuid}', 'NotificacaoController@abrir');
 

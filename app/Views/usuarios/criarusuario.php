@@ -4,28 +4,29 @@
     <div class="bg-white rounded-xl shadow p-6">
         <form action="/usuarios/criarusuario" method="POST" class="space-y-4">
 
+            <?php echo csrf_field(); ?>
             <div>
                 <label class="block text-sm font-semibold text-gray-600 mb-1">Nome</label>
                 <input type="text" name="nome" required
-                       class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
             </div>
 
             <div>
                 <label class="block text-sm font-semibold text-gray-600 mb-1">E-mail</label>
                 <input type="email" name="email"
-                       class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
             </div>
 
             <div>
                 <label class="block text-sm font-semibold text-gray-600 mb-1">CPF/CNPJ</label>
                 <input type="text" name="cpf_cnpj" required
-                       class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
             </div>
 
             <div>
                 <label class="block text-sm font-semibold text-gray-600 mb-1">Perfil</label>
                 <select name="perfil_id" required
-                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
                     <option value="">Selecione...</option>
                     <?php foreach ($perfis as $perfil): ?>
                         <option value="<?php echo $perfil['id']; ?>"><?php echo htmlspecialchars($perfil['nome']); ?></option>
@@ -36,13 +37,13 @@
             <div>
                 <label class="block text-sm font-semibold text-gray-600 mb-1">Senha</label>
                 <input type="password" name="senha" required
-                       class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
             </div>
 
             <div>
                 <label class="block text-sm font-semibold text-gray-600 mb-1">Confirmar senha</label>
                 <input type="password" name="confirmar_senha" required
-                       class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500">
             </div>
 
             <div class="flex items-center gap-2">

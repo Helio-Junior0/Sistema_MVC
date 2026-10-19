@@ -4,6 +4,7 @@
     <div class="bg-white rounded-xl shadow p-6">
         <form action="/perfis/criarperfil" method="POST" class="space-y-4">
 
+        <?php echo csrf_field(); ?>
             <div>
                 <label class="block text-sm font-semibold text-gray-600 mb-1">Nome</label>
                 <input type="text" name="nome" required

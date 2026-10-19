@@ -34,8 +34,11 @@
                             <td class="p-4 text-gray-700"><?php echo htmlspecialchars($permissao['nome_exibicao']); ?></td>
                             <td class="p-4">
                                 <a href="/permissoes/editar/<?php echo $permissao['uuid']; ?>" class="text-blue-600 hover:underline mr-4">Editar</a>
-                                <a href="/permissoes/excluir/<?php echo $permissao['uuid']; ?>" class="text-red-600 hover:underline"
-                                   onclick="return confirm('Excluir esta permissão vai removê-la de todos os perfis. Continuar?');">Excluir</a>
+                                <form action="/permissoes/excluir/<?php echo $permissao['uuid']; ?>" method="POST" class="inline"
+                                    onsubmit="return confirm('Excluir esta permissão vai removê-la de todos os perfis. Continuar?');">
+                                    <?php echo csrf_field(); ?>
+                                    <button type="submit" class="text-red-600 hover:underline">Excluir</button>
+                                </form>
                             </td>
                         </tr>
                     <?php endforeach; ?>

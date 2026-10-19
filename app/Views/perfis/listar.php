@@ -25,8 +25,11 @@
                     <td class="p-4 text-gray-700"><?php echo $perfil['ativo'] ? 'Sim' : 'Não'; ?></td>
                     <td class="p-4">
                         <a href="/perfis/editar/<?php echo $perfil['uuid']; ?>" class="text-blue-600 hover:underline mr-4">Editar</a>
-                        <a href="/perfis/excluir/<?php echo $perfil['uuid']; ?>" class="text-red-600 hover:underline"
-                           onclick="return confirm('Tem certeza que deseja excluir este perfil?');">Excluir</a>
+                        <form action="/perfis/excluir/<?php echo $perfil['uuid']; ?>" method="POST" class="inline"
+                            onsubmit="return confirm('Tem certeza que deseja excluir este perfil?');">
+                            <?php echo csrf_field(); ?>
+                            <button type="submit" class="text-red-600 hover:underline">Excluir</button>
+                        </form>
                     </td>
                 </tr>
             <?php endforeach; ?>

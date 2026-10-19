@@ -98,3 +98,28 @@ function render($nome, $dados = [])
     require __DIR__ . '/../Views/' . $nome . '.php';
     return ob_get_clean();
 }
+
+function csrf_token()
+{
+    if (empty($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+    return $_SESSION['csrf_token'];
+}
+
+function csrf_field()
+{
+    return '<input type="hidden" name="csrf_token" value="' . csrf_token() . '">';
+}
+
+function verificar_csrf()
+{
+    $tokenSessao = $_SESSION['csrf_token'] ?? '';
+    $tokenPost = $_POST['csrf_token'] ?? '';
+
+    if (!$tokenSessao || !$tokenPost || !hash_equals($tokenSessao, $tokenPost)) {
+        http_response_code(403);
+        echo "Sua sessao expirou ou a requisicao e invalida. Volte, recarregue a pagina e tente novamente.";
+        exit;
+    }
+}

@@ -1,6 +1,6 @@
 <div class="flex justify-between items-center mb-6">
     <h1 class="text-3xl font-bold text-gray-800">Usuários</h1>
-        <div class="flex gap-3">
+    <div class="flex gap-3">
         <a href="/usuarios/pdf" target="_blank" class="bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-800">
             Gerar PDF
         </a>
@@ -32,8 +32,11 @@
                     <td class="p-4 text-gray-700"><?php echo $usuario['ativo'] ? 'Sim' : 'Não'; ?></td>
                     <td class="p-4">
                         <a href="/usuarios/editar/<?php echo $usuario['uuid']; ?>" class="text-blue-600 hover:underline mr-4">Editar</a>
-                        <a href="/usuarios/excluir/<?php echo $usuario['uuid']; ?>" class="text-red-600 hover:underline"
-                           onclick="return confirm('Tem certeza que deseja excluir este usuário?');">Excluir</a>
+                        <form action="/usuarios/excluir/<?php echo $usuario['uuid']; ?>" method="POST" class="inline"
+                            onsubmit="return confirm('Tem certeza que deseja excluir este usuário?');">
+                            <?php echo csrf_field(); ?>
+                            <button type="submit" class="text-red-600 hover:underline">Excluir</button>
+                        </form>
                     </td>
                 </tr>
             <?php endforeach; ?>
